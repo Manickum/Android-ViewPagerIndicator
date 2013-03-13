@@ -17,12 +17,15 @@
 package com.viewpagerindicator;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 
@@ -50,11 +53,14 @@ public class IconPageIndicator extends HorizontalScrollView implements PageIndic
         setHorizontalScrollBarEnabled(false);
 
         mIconsLayout = new IcsLinearLayout(context, R.attr.vpiIconPageIndicatorStyle);
-        addView(mIconsLayout, new LayoutParams(WRAP_CONTENT, FILL_PARENT, Gravity.CENTER));
+        addView(mIconsLayout, new LayoutParams(WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, Gravity.CENTER));
     }
 
     private void animateToIcon(final int position) {
         final View iconView = mIconsLayout.getChildAt(position);
+        //trying to select the background
+        iconView.setBackgroundColor(Color.BLUE);
+        
         if (mIconSelector != null) {
             removeCallbacks(mIconSelector);
         }
@@ -123,15 +129,15 @@ public class IconPageIndicator extends HorizontalScrollView implements PageIndic
         view.setOnPageChangeListener(this);
         notifyDataSetChanged();
     }
-
+    
     public void notifyDataSetChanged() {
         mIconsLayout.removeAllViews();
         IconPagerAdapter iconAdapter = (IconPagerAdapter) mViewPager.getAdapter();
         int count = iconAdapter.getCount();
         for (int i = 0; i < count; i++) {
-            ImageView view = new ImageView(getContext(), null, R.attr.vpiIconPageIndicatorStyle);
-            view.setImageResource(iconAdapter.getIconResId(i));
-            mIconsLayout.addView(view);
+           
+            
+            mIconsLayout.addView(iconAdapter.getImageView(i));
         }
         if (mSelectedIndex > count) {
             mSelectedIndex = count - 1;
@@ -148,6 +154,7 @@ public class IconPageIndicator extends HorizontalScrollView implements PageIndic
 
     @Override
     public void setCurrentItem(int item) {
+    	 IconPagerAdapter iconAdapter = (IconPagerAdapter) mViewPager.getAdapter();
         if (mViewPager == null) {
             throw new IllegalStateException("ViewPager has not been bound.");
         }
@@ -157,6 +164,7 @@ public class IconPageIndicator extends HorizontalScrollView implements PageIndic
         int tabCount = mIconsLayout.getChildCount();
         for (int i = 0; i < tabCount; i++) {
             View child = mIconsLayout.getChildAt(i);
+            child.setBackgroundColor(iconAdapter.getBackgroundImageColor());
             boolean isSelected = (i == item);
             child.setSelected(isSelected);
             if (isSelected) {
