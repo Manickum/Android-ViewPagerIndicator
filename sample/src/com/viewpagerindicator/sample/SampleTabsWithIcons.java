@@ -6,6 +6,8 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.View;
+
 import com.viewpagerindicator.IconPagerAdapter;
 import com.viewpagerindicator.TabPageIndicator;
 
@@ -55,5 +57,17 @@ public class SampleTabsWithIcons extends FragmentActivity {
         public int getCount() {
           return CONTENT.length;
         }
+
+	@Override
+	public View getImageView(int index) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int getBackgroundImageColor() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
     }
 }
