@@ -19,7 +19,7 @@ package com.viewpagerindicator;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.support.v4.app.FragmentPagerAdapter;
+
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
@@ -181,7 +181,7 @@ public class TabPageIndicator extends HorizontalScrollView implements PageIndica
 
         FrameLayout frameLayout = new FrameLayout(getContext());
         frameLayout.addView(tabView, params);
-
+        //testing speed of superscript
         params = new FrameLayout.LayoutParams
                 (ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, Gravity.RIGHT | Gravity.CENTER_VERTICAL);
         params.setMargins(0, 3, 5, 0);
@@ -241,7 +241,7 @@ public class TabPageIndicator extends HorizontalScrollView implements PageIndica
         final int count = adapter.getCount();
         for (int i = 0; i < count; i++) {
             CharSequence title = adapter.getPageTitle(i);
-           // CharSequence superScript = adapter.getPageSuperScript(i);
+            // CharSequence superScript = adapter.getPageSuperScript(i);
 
             if (title == null) {
                 title = EMPTY_TITLE;
