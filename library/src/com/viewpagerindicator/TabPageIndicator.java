@@ -17,18 +17,12 @@
 package com.viewpagerindicator;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.Typeface;
-
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -41,9 +35,7 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
  * across different configurations or circumstances.
  */
 public class TabPageIndicator extends HorizontalScrollView implements PageIndicator {
-    /**
-     * Title text used when no title is provided by the adapter.
-     */
+    /** Title text used when no title is provided by the adapter. */
     private static final CharSequence EMPTY_TITLE = "";
 
     /**
@@ -62,7 +54,7 @@ public class TabPageIndicator extends HorizontalScrollView implements PageIndica
 
     private final OnClickListener mTabClickListener = new OnClickListener() {
         public void onClick(View view) {
-            TabView tabView = (TabView) view;
+            TabView tabView = (TabView)view;
             final int oldSelected = mViewPager.getCurrentItem();
             final int newSelected = tabView.getIndex();
             mViewPager.setCurrentItem(newSelected);
@@ -107,7 +99,7 @@ public class TabPageIndicator extends HorizontalScrollView implements PageIndica
         final int childCount = mTabLayout.getChildCount();
         if (childCount > 1 && (widthMode == MeasureSpec.EXACTLY || widthMode == MeasureSpec.AT_MOST)) {
             if (childCount > 2) {
-                mMaxTabWidth = (int) (MeasureSpec.getSize(widthMeasureSpec) * 0.4f);
+                mMaxTabWidth = (int)(MeasureSpec.getSize(widthMeasureSpec) * 0.4f);
             } else {
                 mMaxTabWidth = MeasureSpec.getSize(widthMeasureSpec) / 2;
             }
@@ -157,39 +149,18 @@ public class TabPageIndicator extends HorizontalScrollView implements PageIndica
         }
     }
 
-    private void addTab(int index, CharSequence text, CharSequence topText, int iconResId) {
+    private void addTab(int index, CharSequence text, int iconResId) {
         final TabView tabView = new TabView(getContext());
         tabView.mIndex = index;
         tabView.setFocusable(true);
         tabView.setOnClickListener(mTabClickListener);
         tabView.setText(text);
 
-        final TextView tView = new TextView(getContext());
-        tView.setText(topText);
-        tView.setTextSize(16);
-        tView.setTextColor(Color.WHITE);
-        tView.setTypeface(null, Typeface.BOLD);
-
         if (iconResId != 0) {
             tabView.setCompoundDrawablesWithIntrinsicBounds(iconResId, 0, 0, 0);
         }
 
-        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams
-                (ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
-        //mTabLayout.addView(tabView, new LinearLayout.LayoutParams(0, MATCH_PARENT, 1));
-        //mTabLayout.addView(tabView, params);
-
-        FrameLayout frameLayout = new FrameLayout(getContext());
-        frameLayout.addView(tabView, params);
-        //testing speed of superscript
-        params = new FrameLayout.LayoutParams
-                (ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, Gravity.RIGHT | Gravity.CENTER_VERTICAL);
-        params.setMargins(0, 3, 5, 0);
-        frameLayout.addView(tView, params);
-        mTabLayout.addView(frameLayout);
-
-
-        // mTabLayout.addView(tView, new LinearLayout.LayoutParams(0, MATCH_PARENT, 1));
+        mTabLayout.addView(tabView, new LinearLayout.LayoutParams(0, MATCH_PARENT, 1));
     }
 
     @Override
@@ -233,16 +204,14 @@ public class TabPageIndicator extends HorizontalScrollView implements PageIndica
 
     public void notifyDataSetChanged() {
         mTabLayout.removeAllViews();
-        TabPagerAdapter adapter = (TabPagerAdapter) mViewPager.getAdapter();
+        PagerAdapter adapter = mViewPager.getAdapter();
         IconPagerAdapter iconAdapter = null;
         if (adapter instanceof IconPagerAdapter) {
-            iconAdapter = (IconPagerAdapter) adapter;
+            iconAdapter = (IconPagerAdapter)adapter;
         }
         final int count = adapter.getCount();
         for (int i = 0; i < count; i++) {
             CharSequence title = adapter.getPageTitle(i);
-            // CharSequence superScript = adapter.getPageSuperScript(i);
-
             if (title == null) {
                 title = EMPTY_TITLE;
             }
@@ -250,8 +219,7 @@ public class TabPageIndicator extends HorizontalScrollView implements PageIndica
             if (iconAdapter != null) {
                 iconResId = iconAdapter.getIconResId(i);
             }
-
-            addTab(i, title, adapter.getItemCount(i).toString(), iconResId);
+            addTab(i, title, iconResId);
         }
         if (mSelectedTabIndex > count) {
             mSelectedTabIndex = count - 1;
@@ -294,29 +262,6 @@ public class TabPageIndicator extends HorizontalScrollView implements PageIndica
         private int mIndex;
 
         public TabView(Context context) {
-            super(context, null, R.attr.vpiTabPageIndicatorStyle);
-        }
-
-        @Override
-        public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
-            // Re-measure if we went beyond our maximum size.
-            if (mMaxTabWidth > 0 && getMeasuredWidth() > mMaxTabWidth) {
-                super.onMeasure(MeasureSpec.makeMeasureSpec(mMaxTabWidth, MeasureSpec.EXACTLY),
-                        heightMeasureSpec);
-            }
-        }
-
-        public int getIndex() {
-            return mIndex;
-        }
-    }
-
-    private class TabHighlightedView extends View {
-        private int mIndex;
-
-        public TabHighlightedView(Context context) {
             super(context, null, R.attr.vpiTabPageIndicatorStyle);
         }
 
