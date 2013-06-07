@@ -95,7 +95,7 @@ public class UnderlinePageIndicator extends View implements PageIndicator {
 
         setFades(a.getBoolean(R.styleable.UnderlinePageIndicator_fades, defaultFades));
         setSelectedColor(a.getColor(R.styleable.UnderlinePageIndicator_selectedColor, defaultSelectedColor));
-        setFadeDelay(a.getInteger(R.styleable.UnderlinePageIndicator_fadeDelay, defaultFadeDelay));
+        setFadeDelay(a.getInteger(R.styleable.UnderlinePageIndicator_fadeDelayFork, defaultFadeDelay));
         setFadeLength(a.getInteger(R.styleable.UnderlinePageIndicator_fadeLength, defaultFadeLength));
 
         Drawable background = a.getDrawable(R.styleable.UnderlinePageIndicator_android_background);
